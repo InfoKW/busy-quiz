@@ -3,11 +3,10 @@
 import { useState } from "react";
 import { results, type ResultType } from "@/lib/results";
 
-// TODO: replace these with real URLs once received (Section 12 open items)
 const REGISTER_URL =
-  "https://example.com/ea-august?utm_source=quiz&utm_content=save_my_seat";
+  "https://calendarlink.com/event/LWrqw?utm_source=quiz&utm_content=save_my_seat";
 const SKOOL_URL =
-  "https://example.com/ea-skool?utm_source=quiz&utm_content=join_community";
+  "https://www.skool.com/entrepreneuranonymous/about?utm_source=quiz&utm_content=join_community";
 
 type Props = {
   resultType: ResultType;
@@ -71,7 +70,7 @@ export default function Result({ resultType, onRetake }: Props) {
         <section className="cta-section cta-featured">
           <p>
             Join us live.{" "}
-            <strong>Entrepreneurs Anonymous relaunches this August</strong> — the
+            <strong>Entrepreneurs Anonymous relaunches this August.</strong> The
             first session is all about Busy.
           </p>
           <a

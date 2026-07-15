@@ -15,12 +15,12 @@ export default function Intro({ onStart }: Props) {
 
       <div className="quiz-hero-content">
         <span className="quiz-hero-rule" aria-hidden="true" />
-        <span className="quiz-eyebrow">Entrepreneur Anonymous</span>
+        <span className="quiz-eyebrow">Entrepreneurs Anonymous</span>
         <h1 className="quiz-title">The Busy Test</h1>
         <p className="quiz-subtitle">
-          Are you productive — or just addicted to busy?
+          Are you productive or just addicted to busy?
           <br />
-          12 questions. 3 minutes. Be honest.
+          12 questions. 3 minutes. Answer honestly, nobody sees your results but you.
         </p>
         <button onClick={onStart} className="btn btn-primary btn-hero">
           Start the test
