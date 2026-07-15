@@ -8,6 +8,13 @@ const REGISTER_URL =
 const SKOOL_URL =
   "https://www.skool.com/entrepreneuranonymous/about?utm_source=quiz&utm_content=join_community";
 
+type ModalKey = "session" | "community";
+
+const MODALS: Record<ModalKey, { title: string; url: string }> = {
+  session:   { title: "Save My Seat",       url: REGISTER_URL },
+  community: { title: "Join the Community", url: SKOOL_URL },
+};
+
 type Props = {
   resultType: ResultType;
   onRetake: () => void;
@@ -15,6 +22,8 @@ type Props = {
 
 export default function Result({ resultType, onRetake }: Props) {
   const result = results[resultType];
+
+  const [activeModal, setActiveModal] = useState<ModalKey | null>(null);
 
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -73,14 +82,13 @@ export default function Result({ resultType, onRetake }: Props) {
             <strong>Entrepreneurs Anonymous relaunches this August.</strong> The
             first session is all about Busy.
           </p>
-          <a
-            href={REGISTER_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            type="button"
+            onClick={() => setActiveModal("session")}
             className="btn btn-primary"
           >
             Save my seat
-          </a>
+          </button>
         </section>
 
         {/* CTA 2 — Secondary: Join the community */}
@@ -90,14 +98,13 @@ export default function Result({ resultType, onRetake }: Props) {
             <strong>Join the EA Skool community</strong> for monthly gatherings
             and everything in between.
           </p>
-          <a
-            href={SKOOL_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            type="button"
+            onClick={() => setActiveModal("community")}
             className="btn btn-secondary"
           >
             Join the community
-          </a>
+          </button>
         </section>
 
         {/* CTA 3 — Email fallback */}
@@ -137,6 +144,47 @@ export default function Result({ resultType, onRetake }: Props) {
         </button>
 
       </div>
+
+      {/* ── Iframe modal ── */}
+      {activeModal && (
+        <div
+          className="iframe-overlay"
+          onClick={() => setActiveModal(null)}
+          role="dialog"
+          aria-modal="true"
+          aria-label={MODALS[activeModal].title}
+        >
+          <div className="iframe-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="iframe-modal-header">
+              <span className="iframe-modal-title">{MODALS[activeModal].title}</span>
+              <div className="iframe-modal-actions">
+                <a
+                  href={MODALS[activeModal].url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="iframe-newtab-link"
+                >
+                  Open in new tab ↗
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setActiveModal(null)}
+                  className="iframe-close-btn"
+                  aria-label="Close"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+            <iframe
+              src={MODALS[activeModal].url}
+              title={MODALS[activeModal].title}
+              className="iframe-embed"
+              allow="fullscreen"
+            />
+          </div>
+        </div>
+      )}
     </main>
   );
 }
