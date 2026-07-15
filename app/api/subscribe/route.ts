@@ -59,14 +59,14 @@ export async function POST(req: Request) {
 
   // 2. Add to the quiz form so form-based automations fire.
   const addRes = await fetch(
-    `https://api.kit.com/v4/forms/${FORM_ID}/subscribers/${subscriber.id}`,
+    `https://api.kit.com/v4/forms/${FORM_ID}/subscribers`,
     {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "X-Kit-Api-Key": API_KEY,
       },
-      body: JSON.stringify({ referrer: process.env.NEXT_PUBLIC_SITE_URL ?? "" }),
+      body: JSON.stringify({ email_address: email }),
     }
   );
 
