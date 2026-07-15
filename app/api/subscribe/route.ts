@@ -38,13 +38,24 @@ export async function POST(req: Request) {
   });
 
   if (!createRes.ok) {
+    const kitError = await createRes.json().catch(() => null);
+    console.error("[subscribe] subscriber_create_failed", createRes.status, kitError);
     return Response.json(
-      { ok: false, error: "subscriber_create_failed" },
+      { ok: false, error: "subscriber_create_failed", detail: kitError },
       { status: 502 }
     );
   }
 
-  const { subscriber } = await createRes.json();
+  const createData = await createRes.json();
+  const subscriber = createData.subscriber;
+
+  if (!subscriber?.id) {
+    console.error("[subscribe] no subscriber id in response", createData);
+    return Response.json(
+      { ok: false, error: "no_subscriber_id", detail: createData },
+      { status: 502 }
+    );
+  }
 
   // 2. Add to the quiz form so form-based automations fire.
   const addRes = await fetch(
@@ -60,8 +71,10 @@ export async function POST(req: Request) {
   );
 
   if (!addRes.ok) {
+    const kitError = await addRes.json().catch(() => null);
+    console.error("[subscribe] form_add_failed", addRes.status, kitError);
     return Response.json(
-      { ok: false, error: "form_add_failed" },
+      { ok: false, error: "form_add_failed", detail: kitError },
       { status: 502 }
     );
   }
