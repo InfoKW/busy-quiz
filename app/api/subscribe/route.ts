@@ -71,12 +71,10 @@ export async function POST(req: Request) {
   );
 
   if (!addRes.ok) {
+    // Subscriber is already created in Kit with quiz_result field — log the
+    // form-add failure but don't surface an error to the user.
     const kitError = await addRes.json().catch(() => null);
-    console.error("[subscribe] form_add_failed", addRes.status, kitError);
-    return Response.json(
-      { ok: false, error: "form_add_failed", detail: kitError },
-      { status: 502 }
-    );
+    console.error("[subscribe] form_add_failed (non-fatal)", addRes.status, kitError);
   }
 
   return Response.json({ ok: true });
